@@ -1,0 +1,85 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tennis_string_tune/supabase_config.dart';
+import 'package:tennis_string_tune/screens/home_screen.dart';
+import 'package:tennis_string_tune/screens/login_screen.dart';
+import 'package:tennis_string_tune/screens/clientes_screen.dart';
+import 'package:tennis_string_tune/screens/cliente_form_screen.dart';
+import 'package:tennis_string_tune/screens/raquetas_screen.dart';
+import 'package:tennis_string_tune/screens/cuerdas_screen.dart';
+import 'package:tennis_string_tune/screens/ordenes_screen.dart';
+import 'package:tennis_string_tune/screens/orden_form_screen.dart';
+
+// Notifier que escucha cambios de sesión de Supabase
+class SupabaseAuthNotifier extends ChangeNotifier {
+  SupabaseAuthNotifier() {
+    SupabaseConfig.client.auth.onAuthStateChange.listen((_) {
+      notifyListeners();
+    });
+  }
+}
+
+final _authNotifier = SupabaseAuthNotifier();
+
+final router = GoRouter(
+  initialLocation: '/login',
+  refreshListenable: _authNotifier,
+  redirect: (context, state) {
+    final session = SupabaseConfig.client.auth.currentSession;
+    final isLoggingIn = state.matchedLocation == '/login';
+
+    if (session == null && !isLoggingIn) return '/login';
+    if (session != null && isLoggingIn) return '/home';
+    return null;
+  },
+  routes: [
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/clientes',
+      builder: (context, state) => const ClientesScreen(),
+      routes: [
+        GoRoute(
+          path: 'new',
+          builder: (context, state) => const ClienteFormScreen(),
+        ),
+        GoRoute(
+          path: ':id',
+          builder: (context, state) => ClienteFormScreen(
+            clienteId: state.pathParameters['id'],
+          ),
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '/raquetas',
+      builder: (context, state) => const RaquetasScreen(),
+    ),
+    GoRoute(
+      path: '/cuerdas',
+      builder: (context, state) => const CuerdasScreen(),
+    ),
+    GoRoute(
+      path: '/ordenes',
+      builder: (context, state) => const OrdenesScreen(),
+      routes: [
+        GoRoute(
+          path: 'new',
+          builder: (context, state) => const OrdenFormScreen(),
+        ),
+        GoRoute(
+          path: ':id',
+          builder: (context, state) => OrdenFormScreen(
+            ordenId: state.pathParameters['id'],
+          ),
+        ),
+      ],
+    ),
+  ],
+);

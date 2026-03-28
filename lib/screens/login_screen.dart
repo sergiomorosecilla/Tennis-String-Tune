@@ -59,16 +59,16 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Tennis String & Tune',
+                'Professional Stringing Management System',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1F2A44),
                 ),
               ),
               const SizedBox(height: 8),
               const Text(
-                'Accede a tu taller',
+                'Acceso al taller',
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey,
@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'tu@email.com',
                   prefixIcon: Icon(Icons.email_outlined),
                   border: OutlineInputBorder(),
                   filled: true,
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
                       : const Text(
-                          'Entrar',
+                          'Iniciar Sesión',
                           style: TextStyle(fontSize: 16),
                         ),
                 ),

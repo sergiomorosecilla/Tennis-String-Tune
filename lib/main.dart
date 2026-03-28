@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_string_tune/supabase_config.dart';
-import 'package:tennis_string_tune/screens/login_screen.dart';
+import 'package:tennis_string_tune/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Tennis String & Tune',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -22,33 +22,7 @@ class MainApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const AuthGate(),
-    );
-  }
-}
-
-class AuthGate extends StatelessWidget {
-  const AuthGate({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: SupabaseConfig.client.auth.onAuthStateChange,
-      builder: (context, snapshot) {
-        final session = snapshot.data?.session;
-
-        if (session != null) {
-          // Usuario autenticado → home (de momento placeholder)
-          return const Scaffold(
-            body: Center(
-              child: Text('¡Bienvenido al taller! 🎾'),
-            ),
-          );
-        }
-
-        // Sin sesión → login
-        return const LoginScreen();
-      },
+      routerConfig: router,
     );
   }
 }
