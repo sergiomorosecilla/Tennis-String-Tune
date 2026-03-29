@@ -5,12 +5,11 @@ import 'package:tennis_string_tune/screens/home_screen.dart';
 import 'package:tennis_string_tune/screens/login_screen.dart';
 import 'package:tennis_string_tune/screens/clientes_screen.dart';
 import 'package:tennis_string_tune/screens/cliente_form_screen.dart';
-import 'package:tennis_string_tune/screens/raquetas_screen.dart';
+import 'package:tennis_string_tune/screens/cliente_detail_screen.dart';
 import 'package:tennis_string_tune/screens/cuerdas_screen.dart';
 import 'package:tennis_string_tune/screens/ordenes_screen.dart';
 import 'package:tennis_string_tune/screens/orden_form_screen.dart';
 
-// Notifier que escucha cambios de sesión de Supabase
 class SupabaseAuthNotifier extends ChangeNotifier {
   SupabaseAuthNotifier() {
     SupabaseConfig.client.auth.onAuthStateChange.listen((_) {
@@ -51,15 +50,19 @@ final router = GoRouter(
         ),
         GoRoute(
           path: ':id',
-          builder: (context, state) => ClienteFormScreen(
-            clienteId: state.pathParameters['id'],
+          builder: (context, state) => ClienteDetailScreen(
+            clienteId: state.pathParameters['id']!,
           ),
+          routes: [
+            GoRoute(
+              path: 'edit',
+              builder: (context, state) => ClienteFormScreen(
+                clienteId: state.pathParameters['id'],
+              ),
+            ),
+          ],
         ),
       ],
-    ),
-    GoRoute(
-      path: '/raquetas',
-      builder: (context, state) => const RaquetasScreen(),
     ),
     GoRoute(
       path: '/cuerdas',

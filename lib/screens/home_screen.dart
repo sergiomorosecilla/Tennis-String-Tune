@@ -29,9 +29,9 @@ class HomeScreen extends StatelessWidget {
         mainAxisSpacing: 16,
         children: [
           _MenuCard(icon: Icons.people,       label: 'Clientes', route: '/clientes'),
-          _MenuCard(icon: Icons.sports_tennis, label: 'Raquetas', route: '/raquetas'),
+          _MenuCard(icon: Icons.bar_chart,     label: 'Dashboard BI',  route: '/dashboard'),
           _MenuCard(icon: Icons.cable,         label: 'Cuerdas',  route: '/cuerdas'),
-          _MenuCard(icon: Icons.assignment,    label: 'Órdenes',  route: '/ordenes'),
+          _MenuCard(icon: Icons.assignment,    label: 'Ordenes ',  route: '/ordenes'),
         ],
       ),
     );
