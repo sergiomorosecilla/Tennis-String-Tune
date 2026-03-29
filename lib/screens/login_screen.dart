@@ -52,10 +52,9 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Logo / título
-              const Icon(
-                Icons.sports_tennis,
-                size: 80,
-                color: Color(0xFF3FA34D),
+              Image.asset(
+                'assets/images/logo_tennis_string_tune.png',
+                height: 250,
               ),
               const SizedBox(height: 16),
               const Text(
