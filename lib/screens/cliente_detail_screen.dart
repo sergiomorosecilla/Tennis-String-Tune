@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tennis_string_tune/models/cliente.dart';
+import 'package:tennis_string_tune/models/raqueta.dart';
 import 'package:tennis_string_tune/services/cliente_service.dart';
+import 'package:tennis_string_tune/services/raqueta_service.dart';
 
 class ClienteDetailScreen extends StatefulWidget {
   final String clienteId;
@@ -12,33 +14,81 @@ class ClienteDetailScreen extends StatefulWidget {
 }
 
 class _ClienteDetailScreenState extends State<ClienteDetailScreen> {
-  final _service = ClienteService();
+  final _clienteService = ClienteService();
+  final _raquetaService = RaquetaService();
+
   Cliente? _cliente;
+  List<Raqueta> _raquetas = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadCliente();
+    _loadData();
   }
 
-  Future<void> _loadCliente() async {
+  Future<void> _loadData() async {
     setState(() => _isLoading = true);
     try {
-      final cliente = await _service.getById(widget.clienteId);
+      final cliente = await _clienteService.getById(widget.clienteId);
       if (cliente == null) {
         if (mounted) context.go('/clientes');
         return;
       }
-      setState(() => _cliente = cliente);
+      final raquetas = await _raquetaService.getByCliente(widget.clienteId);
+      setState(() {
+        _cliente  = cliente;
+        _raquetas = raquetas;
+      });
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al cargar cliente: $e')),
+          SnackBar(content: Text('Error al cargar datos: $e')),
         );
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _deleteRaqueta(Raqueta raqueta) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Eliminar raqueta'),
+        content: Text(
+          '¿Seguro que quieres eliminar ${raqueta.nombreCompleto}?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Eliminar'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true) return;
+
+    try {
+      await _raquetaService.delete(raqueta.id);
+      _loadData();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Raqueta eliminada')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al eliminar: $e')),
+        );
+      }
     }
   }
 
@@ -62,7 +112,7 @@ class _ClienteDetailScreenState extends State<ClienteDetailScreen> {
                     await context.push(
                       '/clientes/${widget.clienteId}/edit',
                     );
-                    _loadCliente();
+                    _loadData();
                   },
           ),
         ],
@@ -140,13 +190,13 @@ class _ClienteDetailScreenState extends State<ClienteDetailScreen> {
                         ),
                       const SizedBox(height: 24),
 
-                      // Sección raquetas (placeholder por ahora)
+                      // Sección raquetas
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            'Raquetas',
-                            style: TextStyle(
+                          Text(
+                            'Raquetas (${_raquetas.length})',
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF1F2A44),
@@ -157,22 +207,80 @@ class _ClienteDetailScreenState extends State<ClienteDetailScreen> {
                               Icons.add_circle,
                               color: Color(0xFF3FA34D),
                             ),
-                            onPressed: () {
-                              // navegación al form de raqueta — próximamente
+                            onPressed: () async {
+                              await context.push(
+                                '/clientes/${widget.clienteId}/raquetas/new',
+                              );
+                              _loadData();
                             },
                           ),
                         ],
                       ),
                       const Divider(),
-                      const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Text(
-                            'Las raquetas se añadirán en el siguiente paso',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                      ),
+
+                      // Listado de raquetas
+                      _raquetas.isEmpty
+                          ? const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Center(
+                                child: Text(
+                                  'No hay raquetas registradas',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: _raquetas.length,
+                              itemBuilder: (context, index) {
+                                final raqueta = _raquetas[index];
+                                return Card(
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 4,
+                                  ),
+                                  child: ListTile(
+                                    leading: const CircleAvatar(
+                                      backgroundColor: Color(0xFF1F2A44),
+                                      foregroundColor: Colors.white,
+                                      child: Icon(Icons.sports_tennis),
+                                    ),
+                                    title: Text(
+                                      raqueta.nombreCompleto,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    subtitle: Text(raqueta.tensionDisplay),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(
+                                            Icons.edit,
+                                            color: Color(0xFF3FA34D),
+                                          ),
+                                          onPressed: () async {
+                                            await context.push(
+                                              '/clientes/${widget.clienteId}/raquetas/${raqueta.id}',
+                                            );
+                                            _loadData();
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () =>
+                                              _deleteRaqueta(raqueta),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                     ],
                   ),
                 ),
@@ -180,7 +288,6 @@ class _ClienteDetailScreenState extends State<ClienteDetailScreen> {
   }
 }
 
-// Widget auxiliar para filas de información
 class _InfoRow extends StatelessWidget {
   final IconData icon;
   final String label;

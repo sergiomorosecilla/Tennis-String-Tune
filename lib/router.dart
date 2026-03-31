@@ -6,6 +6,7 @@ import 'package:tennis_string_tune/screens/login_screen.dart';
 import 'package:tennis_string_tune/screens/clientes_screen.dart';
 import 'package:tennis_string_tune/screens/cliente_form_screen.dart';
 import 'package:tennis_string_tune/screens/cliente_detail_screen.dart';
+import 'package:tennis_string_tune/screens/raqueta_form_screen.dart';
 import 'package:tennis_string_tune/screens/cuerdas_screen.dart';
 import 'package:tennis_string_tune/screens/ordenes_screen.dart';
 import 'package:tennis_string_tune/screens/orden_form_screen.dart';
@@ -58,6 +59,19 @@ final router = GoRouter(
               path: 'edit',
               builder: (context, state) => ClienteFormScreen(
                 clienteId: state.pathParameters['id'],
+              ),
+            ),
+            GoRoute(
+              path: 'raquetas/new',
+              builder: (context, state) => RaquetaFormScreen(
+                clienteId: state.pathParameters['id']!,
+              ),
+            ),
+            GoRoute(
+              path: 'raquetas/:raquetaId',
+              builder: (context, state) => RaquetaFormScreen(
+                clienteId:  state.pathParameters['id']!,
+                raquetaId:  state.pathParameters['raquetaId'],
               ),
             ),
           ],
