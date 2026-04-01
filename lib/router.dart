@@ -8,6 +8,7 @@ import 'package:tennis_string_tune/screens/cliente_form_screen.dart';
 import 'package:tennis_string_tune/screens/cliente_detail_screen.dart';
 import 'package:tennis_string_tune/screens/raqueta_form_screen.dart';
 import 'package:tennis_string_tune/screens/cuerdas_screen.dart';
+import 'package:tennis_string_tune/screens/cuerda_form_screen.dart';
 import 'package:tennis_string_tune/screens/ordenes_screen.dart';
 import 'package:tennis_string_tune/screens/orden_form_screen.dart';
 
@@ -81,6 +82,18 @@ final router = GoRouter(
     GoRoute(
       path: '/cuerdas',
       builder: (context, state) => const CuerdasScreen(),
+      routes: [
+        GoRoute(
+          path: 'new',
+          builder: (context, state) => const CuerdaFormScreen(),
+        ),
+        GoRoute(
+          path: ':id',
+          builder: (context, state) => CuerdaFormScreen(
+            cuerdaId: state.pathParameters['id'],
+          ),
+        ),
+      ],
     ),
     GoRoute(
       path: '/ordenes',
