@@ -281,6 +281,43 @@ class _ClienteDetailScreenState extends State<ClienteDetailScreen> {
                                 );
                               },
                             ),
+                      // Sección órdenes
+                      const SizedBox(height: 24),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Órdenes',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1F2A44),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.add_circle,
+                              color: Color(0xFF3FA34D),
+                            ),
+                            onPressed: () async {
+                              await context.push(
+                                '/clientes/${widget.clienteId}/ordenes/new',
+                              );
+                              _loadData();
+                            },
+                          ),
+                        ],
+                      ),
+                      const Divider(),
+                      const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Text(
+                            'Ver todas las órdenes en el módulo Servicios',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

@@ -71,8 +71,14 @@ final router = GoRouter(
             GoRoute(
               path: 'raquetas/:raquetaId',
               builder: (context, state) => RaquetaFormScreen(
-                clienteId:  state.pathParameters['id']!,
-                raquetaId:  state.pathParameters['raquetaId'],
+                clienteId: state.pathParameters['id']!,
+                raquetaId: state.pathParameters['raquetaId'],
+              ),
+            ),
+            GoRoute(
+              path: 'ordenes/new',
+              builder: (context, state) => OrdenFormScreen(
+                clienteId: state.pathParameters['id'],
               ),
             ),
           ],
@@ -99,10 +105,6 @@ final router = GoRouter(
       path: '/ordenes',
       builder: (context, state) => const OrdenesScreen(),
       routes: [
-        GoRoute(
-          path: 'new',
-          builder: (context, state) => const OrdenFormScreen(),
-        ),
         GoRoute(
           path: ':id',
           builder: (context, state) => OrdenFormScreen(
