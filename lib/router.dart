@@ -113,5 +113,22 @@ final router = GoRouter(
         ),
       ],
     ),
+    GoRoute(
+      path: '/dashboard',
+      builder: (context, state) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Dashboard BI'),
+          backgroundColor: const Color(0xFF3FA34D),
+          foregroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => context.go('/home'),
+          ),
+        ),
+        body: const Center(
+          child: Text('Power BI — próximamente'),
+        ),
+      ),
+    ),
   ],
 );

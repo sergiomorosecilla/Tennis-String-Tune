@@ -154,4 +154,4 @@ INSERT INTO raquetas (cliente_id, marca, modelo,
                       tension_habitual_main,
                       tension_habitual_cross)
 SELECT id, 'Babolat', 'Pure Drive', 25.0, 24.0
-FROM clientes WHERE email = 'maria@example.com';
+FROM clientes WHERE email = 'maria@example.com';2
