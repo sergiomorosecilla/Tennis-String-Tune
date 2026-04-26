@@ -1,7 +1,6 @@
 -- =============================================
 -- SEED DATA — Tennis String & Tune
 -- Datos de prueba para desarrollo y validación Power BI
--- Ejecutar después de schema.sql
 -- =============================================
 
 -- =============================================

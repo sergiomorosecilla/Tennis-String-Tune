@@ -95,6 +95,17 @@ class OrdenServicioService {
         .eq('id', id);
   }
 
+  // Marcar como entregada (cambia estado y fecha de entrega real)
+  Future<void> marcarEntregada(String id) async {
+  await _db
+      .from('ordenes_servicio')
+      .update({
+        'estado': 'entregado',
+        'fecha_entrega_real': DateTime.now().toIso8601String(),
+      })
+      .eq('id', id);
+  }
+
   // KPIs para el home dashboard
   Future<Map<String, dynamic>> getKpis() async {
     final hoy = DateTime.now();

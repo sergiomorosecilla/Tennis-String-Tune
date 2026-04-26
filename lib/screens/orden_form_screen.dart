@@ -53,6 +53,8 @@ class _OrdenFormScreenState extends State<OrdenFormScreen> {
   // Misma cuerda para main y cross
   bool _mismaCuerda = true;
 
+  DateTime? _fechaPrevista;
+
   bool _isLoading     = true;
   bool _isSaving      = false;
   OrdenServicio? _ordenOriginal;
@@ -165,6 +167,7 @@ class _OrdenFormScreenState extends State<OrdenFormScreen> {
         _srvGrip      = orden.srvGrip;
         _srvLimpieza  = orden.srvLimpieza;
         _srvLogo      = orden.srvLogo;
+        _fechaPrevista = orden.fechaPrevista;
       });
 
       _tensionMainController.text  = orden.tensionMain?.toString()  ?? '';
@@ -237,6 +240,7 @@ class _OrdenFormScreenState extends State<OrdenFormScreen> {
           pagado:         false,
           estado:         'pendiente',
           fechaEntrada:   DateTime.now(),
+          fechaPrevista:  _fechaPrevista,
           notas:          _notasController.text.trim().isEmpty
                             ? null
                             : _notasController.text.trim(),
@@ -258,6 +262,7 @@ class _OrdenFormScreenState extends State<OrdenFormScreen> {
           tensionMain:    double.tryParse(_tensionMainController.text.trim()),
           tensionCross:   double.tryParse(_tensionCrossController.text.trim()),
           precioTotal:    precio,
+          fechaPrevista:  _fechaPrevista,
           notas:          _notasController.text.trim().isEmpty
                             ? null
                             : _notasController.text.trim(),
@@ -477,6 +482,65 @@ class _OrdenFormScreenState extends State<OrdenFormScreen> {
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  const Text('Fecha prevista de entrega',
+                      style: TextStyle(fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 8),
+                  InkWell(
+                    onTap: () async {
+                      final fecha = await showDatePicker(
+                        context: context,
+                        initialDate: _fechaPrevista ?? DateTime.now().add(
+                          const Duration(days: 2),
+                        ),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: const ColorScheme.light(
+                                primary: Color(0xFF3FA34D),
+                              ),
+                            ),
+                            child: child!,
+                          );
+                        },
+                      );
+                      if (fecha != null) {
+                        setState(() => _fechaPrevista = fecha);
+                      }
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 14,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey.shade400),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.calendar_today,
+                              size: 18, color: Color(0xFF3FA34D)),
+                          const SizedBox(width: 8),
+                          Text(
+                            _fechaPrevista != null
+                                ? '${_fechaPrevista!.day}/${_fechaPrevista!.month}/${_fechaPrevista!.year}'
+                                : 'Selecciona una fecha (opcional)',
+                            style: TextStyle(
+                              color: _fechaPrevista != null
+                                  ? const Color(0xFF1F2A44)
+                                  : Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 16),
 

@@ -48,7 +48,12 @@ class _OrdenesScreenState extends State<OrdenesScreen> {
 
   Future<void> _cambiarEstado(OrdenServicio orden, String nuevoEstado) async {
     try {
-      await _service.cambiarEstado(orden.id, nuevoEstado);
+      if (nuevoEstado == 'entregado') {
+        // Graba el timestamp de entrega real
+        await _service.marcarEntregada(orden.id);
+      } else {
+        await _service.cambiarEstado(orden.id, nuevoEstado);
+      }
       _loadOrdenes();
     } catch (e) {
       if (mounted) {
@@ -98,6 +103,24 @@ class _OrdenesScreenState extends State<OrdenesScreen> {
     }
   }
 
+  Future<void> _marcarPagada(OrdenServicio orden) async {
+    try {
+      await _service.marcarPagada(orden.id);
+      _loadOrdenes();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Orden marcada como pagada')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al marcar como pagada: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,6 +148,7 @@ class _OrdenesScreenState extends State<OrdenesScreen> {
                     orden: o,
                     onEstado: _cambiarEstado,
                     onDelete: _delete,
+                    onPagado: _marcarPagada,
                     onTap: () async {
                       await context.push('/ordenes/${o.id}');
                       _loadOrdenes();
@@ -142,6 +166,7 @@ class _OrdenesScreenState extends State<OrdenesScreen> {
                     orden: o,
                     onEstado: _cambiarEstado,
                     onDelete: _delete,
+                    onPagado: _marcarPagada,
                     onTap: () async {
                       await context.push('/ordenes/${o.id}');
                       _loadOrdenes();
@@ -159,6 +184,7 @@ class _OrdenesScreenState extends State<OrdenesScreen> {
                     orden: o,
                     onEstado: _cambiarEstado,
                     onDelete: _delete,
+                    onPagado: _marcarPagada,
                     onTap: () async {
                       await context.push('/ordenes/${o.id}');
                       _loadOrdenes();
@@ -176,6 +202,7 @@ class _OrdenesScreenState extends State<OrdenesScreen> {
                     orden: o,
                     onEstado: _cambiarEstado,
                     onDelete: _delete,
+                    onPagado: _marcarPagada,
                     onTap: () async {
                       await context.push('/ordenes/${o.id}');
                       _loadOrdenes();
@@ -245,12 +272,15 @@ class _OrdenCard extends StatelessWidget {
   final OrdenServicio orden;
   final Future<void> Function(OrdenServicio, String) onEstado;
   final Future<void> Function(OrdenServicio) onDelete;
+  final Future<void> Function(OrdenServicio) onPagado;
   final VoidCallback onTap;
+
 
   const _OrdenCard({
     required this.orden,
     required this.onEstado,
     required this.onDelete,
+    required this.onPagado,
     required this.onTap,
   });
 
@@ -349,6 +379,48 @@ class _OrdenCard extends StatelessWidget {
                     activo: orden.estado == 'entregado',
                     color: Colors.grey,
                     onTap: () => onEstado(orden, 'entregado'),
+                  ),
+                  // Botón pagado
+                  GestureDetector(
+                    onTap: () async {
+                      if (!orden.pagado) {
+                        await onPagado(orden);
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: orden.pagado
+                            ? const Color(0xFF3FA34D)
+                            : Colors.transparent,
+                        border: Border.all(
+                          color: const Color(0xFF3FA34D),
+                          width: 0.5,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            orden.pagado ? Icons.check : Icons.euro,
+                            size: 10,
+                            color: orden.pagado ? Colors.white : const Color(0xFF3FA34D),
+                          ),
+                          const SizedBox(width: 3),
+                          Text(
+                            orden.pagado ? 'Pagado' : 'Cobrar',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: orden.pagado
+                                  ? Colors.white
+                                  : const Color(0xFF3FA34D),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   const Spacer(),
                   IconButton(
