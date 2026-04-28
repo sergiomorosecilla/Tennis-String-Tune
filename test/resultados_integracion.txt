@@ -1,0 +1,27 @@
+00:00 +0: loading C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/integration/supabase_integration_test.dart
+00:00 +0: (setUpAll)
+00:00 +0 -1: (setUpAll) [E]
+  MissingPluginException(No implementation found for method getAll on channel plugins.flutter.io/shared_preferences)
+  dart:async                                                           _Completer.completeError
+  package:shared_preferences/src/shared_preferences_legacy.dart 90:19  SharedPreferences.getInstance
+  ===== asynchronous gap ===========================
+  dart:async                                                           _CustomZone.registerBinaryCallback
+  package:shared_preferences/src/shared_preferences_legacy.dart 85:13  SharedPreferences.getInstance
+  package:supabase_flutter/src/local_storage.dart 129:38               SharedPreferencesGotrueAsyncStorage._initialize
+  package:supabase_flutter/src/local_storage.dart 120:5                new SharedPreferencesGotrueAsyncStorage
+  package:supabase_flutter/src/supabase.dart 110:27                    Supabase.initialize
+  test\integration\supabase_integration_test.dart 11:20                main.<fn>
+  
+  MissingPluginException(No implementation found for method getAll on channel plugins.flutter.io/shared_preferences)
+  dart:async                                                           _Completer.completeError
+  package:shared_preferences/src/shared_preferences_legacy.dart 90:19  SharedPreferences.getInstance
+  ===== asynchronous gap ===========================
+  dart:async                                                           _CustomZone.registerBinaryCallback
+  package:shared_preferences/src/shared_preferences_legacy.dart 85:13  SharedPreferences.getInstance
+  package:supabase_flutter/src/local_storage.dart 129:38               SharedPreferencesGotrueAsyncStorage._initialize
+  package:supabase_flutter/src/local_storage.dart 120:5                new SharedPreferencesGotrueAsyncStorage
+  package:supabase_flutter/src/supabase.dart 110:27                    Supabase.initialize
+  test\integration\supabase_integration_test.dart 11:20                main.<fn>
+  
+00:00 +0 -1: (tearDownAll)
+00:01 +0 -1: Some tests failed.

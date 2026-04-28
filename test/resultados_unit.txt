@@ -1,0 +1,15 @@
+00:00 +0: loading C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/cliente_model_test.dart
+00:00 +0: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/cliente_model_test.dart: UT01 — Cliente.fromJson construye correctamente el modelo desde JSON
+00:00 +1: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/cliente_model_test.dart: UT01 — Cliente.fromJson nombreCompleto devuelve nombre y apellidos concatenados
+00:00 +2: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/cliente_model_test.dart: UT03 — Validaciones formulario cliente nombre vacío debe ser detectado
+00:00 +3: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/cliente_model_test.dart: UT03 — Validaciones formulario cliente apellidos vacíos debe ser detectado
+00:00 +4: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/cliente_model_test.dart: UT03 — Validaciones formulario cliente teléfono vacío debe ser detectado
+00:00 +5: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/cliente_model_test.dart: UT03 — Validaciones formulario cliente campos rellenos son válidos
+00:00 +6: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/orden_model_test.dart: UT02 — OrdenServicio.fromJson mapea correctamente todos los campos
+00:00 +7: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/orden_model_test.dart: UT04 — Validación servicios serviciosActivos devuelve lista correcta
+00:00 +8: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/orden_model_test.dart: UT04 — Validación servicios serviciosActivos incluye todos los servicios activos
+00:00 +9: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/orden_model_test.dart: UT06 — Validación tensión tensión fuera de rango 10-40 kg debe ser detectada
+00:00 +10: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/orden_model_test.dart: UT07 — Cálculo precio total precio_total refleja el valor guardado
+00:00 +11: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/orden_model_test.dart: UT08 — Transiciones de estado válidas secuencia de estados válida
+00:00 +12: C:/Users/sergi/Documents/2o_DAM_Master/2o_DAM/TFG/Tennis-String-Tune/test/unit/orden_model_test.dart: UT09 — Transiciones de estado inválidas retroceso de estado debe ser bloqueado
+00:00 +13: All tests passed!
