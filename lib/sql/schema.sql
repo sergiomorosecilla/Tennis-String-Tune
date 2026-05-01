@@ -132,6 +132,41 @@ CREATE POLICY "Acceso autenticado — ordenes"
   USING (true)
   WITH CHECK (true);
 
+
+-- =============================================
+-- Cambio en las RLS pàra que PowerBI pueda leer datos de las tablas 
+-- =============================================
+
+
+alter table public.ordenes_servicio enable row level security;
+alter table public.clientes enable row level security;
+alter table public.raquetas enable row level security;
+alter table public.cuerdas enable row level security;
+
+create policy "Allow anon read ordenes_servicio"
+on public.ordenes_servicio
+for select
+to anon
+using (true);
+
+create policy "Allow anon read clientes"
+on public.clientes
+for select
+to anon
+using (true);
+
+create policy "Allow anon read raquetas"
+on public.raquetas
+for select
+to anon
+using (true);
+
+create policy "Allow anon read cuerdas"
+on public.cuerdas
+for select
+to anon
+using (true);
+
 -- 8. DATOS DE PRUEBA
 -- =============================================
 
